@@ -268,6 +268,13 @@ int main(int argc, char* argv[])
 		{
 			// decalage vers la gauche à chaque occurence
 			std::string shiftedBinaryValue = circularShift(binaryValue, blockSize, shift);
+			// suppression des caractères NUL parasites
+			size_t nullPos = shiftedBinaryValue.find("00000000");
+			while (nullPos != std::string::npos) {
+				shiftedBinaryValue.erase(nullPos, 8);
+				nullPos = shiftedBinaryValue.find("00000000");
+			}
+			
 			std::string shiftedAsciiValue;
 			// parcoure les blocs de 8 bits
 			for (size_t i=0; i<shiftedBinaryValue.length(); i+=8)
