@@ -5,8 +5,8 @@ Bruteforce decryption circular bit shift cipher
 ## Description
 #### Décalage circulaire
 Le décalage circulaire est souvent utilisé en cryptographie pour décaler tous les bits de l'opérande considéré. Il y a deux paramètres à prendre en compte :  
--> Décalage : nombre de bits décalés  
--> Blocs : groupes de bits sur laquelle on applique un décalage circulaire
+- Décalage : nombre de bits décalés  
+- Blocs : groupes de bits sur laquelle on applique un décalage circulaire  
 Si vous faîtes un décalage circulaire à gauche sur le nombre 1101 0010 avec des blocs de 4 bits et des décalages de 2 bits, ça donnera 0111 1000.  
 #### CircularBitShifter
 Le script applique un bruteforce de décalage circulaire de bits sur une valeur hexadécimale en argument  
