@@ -9,9 +9,9 @@ Le décalage circulaire est souvent utilisé en cryptographie pour décaler tous
 - Blocs : groupes de bits sur laquelle on applique un décalage circulaire  
 Si vous faîtes un décalage circulaire à gauche sur le nombre 1101 0010 avec des blocs de 4 bits et des décalages de 2 bits, ça donnera 0111 1000.  
 #### CircularBitShifter
-Le script applique un bruteforce de décalage circulaire de bits sur une valeur hexadécimale en argument.  
-Les décalages circulaires de bits sont appliqués à des blocs de bits de tailles allant de 2 à 32, et des décalages de 1 à la taille du bloc.  
-Les résultats sont affichés en ASCII et permettent d'identifier les paramètres utilisés lors du chiffrement par décalage circulaire. (nombre de blocs [] et nombre de décalage de bits)  
+Le script applique un bruteforce de décalage circulaire de bits sur une valeur hexadécimale en argument  
+Les décalages circulaires de bits sont appliqués à des blocs de bits de tailles allant de 2 à 32, et des décalages de 1 à la taille du bloc  
+Les résultats sont affichés en ASCII et permettent d'identifier les paramètres utilisés lors du chiffrement par décalage circulaire (nombre de blocs [] et nombre de décalage de bits)  
 
 ## Fonctionnalités
 - Certains caractères sont remplacés pour éviter de flood le résultat (tab, saut de ligne, retour chariot...)
