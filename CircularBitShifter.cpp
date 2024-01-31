@@ -16,14 +16,18 @@ enum Format {
 
 
 // décalage circulaire vers la gauche sur chaque bloc de bits
-std::string circularShift(const std::string& binaryValue, int blockSize, int shift)
+std::string circularShift(const std::string& binaryValue, int blockSize, int shift, bool shiftRight)
 {
 	const int bitSize = 8 * sizeof(unsigned long long);
     std::string result;
     for (size_t i = 0; i < binaryValue.length(); i+=blockSize)
 	{
         std::bitset<4096> block(binaryValue.substr(i, blockSize));
-        block = (block<<shift) | (block>>(blockSize-shift));
+        if (shiftRight) {
+            block = (block >> shift) | (block << (blockSize - shift));
+        } else { // decalage a gauche par defaut
+            block = (block << shift) | (block >> (blockSize - shift));
+        }
         result += block.to_string().substr(4096-blockSize);
     }
 	result.erase(result.find_last_not_of('0') + 1); // efface les 0 en trop a la fin
@@ -102,6 +106,7 @@ int main(int argc, char* argv[])
 		std::cerr << "Utilisation: " << argv[0] << " <valeur> [--format=<ascii|hex|bin>] [-b] [-h] [-d] [-i] [-e] [-m1 | -m2 | -m3]" << std::endl;
 		std::cerr << "Options :" << std::endl;
 		std::cerr << "  --format=<ascii|hex|bin> : Format de de la valeur d'entree (par defaut : ascii)" << std::endl;
+		std::cerr << "  --shift=<left|right> : Sens du decalage circulaire (par defaut : left)" << std::endl;
 		std::cerr << "  -b : Affiche la valeur en binaire" << std::endl;
 		std::cerr << "  -h : Affiche la valeur en hexadecimal" << std::endl;
 		std::cerr << "  -d : Affiche la valeur en decimal" << std::endl;
@@ -119,6 +124,7 @@ int main(int argc, char* argv[])
     bool displayDecimal = false;
 	bool exportToFile = false;
 	std::ofstream outputFile;
+	bool shiftRight = false;
 	bool displayAlphanumericCount = false;
 	int maxAlphanumericCount = 0;
 	int maxBlockSize = 32;
@@ -166,7 +172,14 @@ int main(int argc, char* argv[])
 		{
 			maxBlockSize = 4096;
 		}
-		
+        else if (std::string(argv[i]) == "--shift=right")
+        {
+            shiftRight = true;
+        }
+        else if (std::string(argv[i]) == "--shift=left")
+        {
+            shiftRight = false;
+        }
 		else if (std::string(argv[i]) == "--format=ascii")
 		{
 			outputFormat = ASCII;
@@ -267,7 +280,7 @@ int main(int argc, char* argv[])
         for (int shift=1; shift<blockSize; ++shift)
 		{
 			// decalage vers la gauche à chaque occurence
-			std::string shiftedBinaryValue = circularShift(binaryValue, blockSize, shift);
+			std::string shiftedBinaryValue = circularShift(binaryValue, blockSize, shift, shiftRight);
 			// suppression des caractères NUL parasites
 			size_t nullPos = shiftedBinaryValue.find("00000000");
 			while (nullPos != std::string::npos) {
@@ -295,7 +308,7 @@ int main(int argc, char* argv[])
 			{
 
 				// affichage ASCII
-				outputFile << "[" << blockSize << "]+ " << shift << " :    " << shiftedAsciiValue;
+				outputFile << "[" << blockSize << "]+" << shift << " :    " << shiftedAsciiValue;
 
 				if (displayHex) // affichage hex avec -h
 				{
@@ -307,7 +320,7 @@ int main(int argc, char* argv[])
 				}
 				if (displayBinary) // affichage binaire avec -b
 				{
-					outputFile << shiftedBinaryValue;
+					outputFile << "\n" << shiftedBinaryValue;
 				}
                 if (displayAlphanumericCount) // affichage nb alphanumeric avec -i
                 {
@@ -321,7 +334,7 @@ int main(int argc, char* argv[])
 			else
 			{
 				// affichage ASCII
-				std::cout << "[" << blockSize << "]+ " << shift << " :    " << shiftedAsciiValue;
+				std::cout << "[" << blockSize << "]+" << shift << " :    " << shiftedAsciiValue;
 
 				if (displayHex) // affichage hex avec -h
 				{
@@ -333,7 +346,7 @@ int main(int argc, char* argv[])
 				}
 				if (displayBinary) // affichage binaire avec -b
 				{
-					std::cout << shiftedBinaryValue;
+					std::cout << "\n" << shiftedBinaryValue;
 				}
                 if (displayAlphanumericCount) // affichage nb alphanumeric avec -i
                 {
@@ -348,7 +361,7 @@ int main(int argc, char* argv[])
 	
     if (displayAlphanumericCount)
     {
-        std::cout << "Maximum de char alphanumerique sur une occurence: " << maxAlphanumericCount << std::endl;
+        std::cout << "Maximum de char alphanumerique decouvert sur une occurence: " << maxAlphanumericCount << std::endl;
     }
 	if (exportToFile)
 	{
