@@ -21,11 +21,12 @@ Si vous faîtes un décalage circulaire à gauche sur le nombre 1101 0010 avec d
 
 ## Utilisation
 `g++ CircularBitShifter.cpp -o CircularBitShifter.exe` Compilé avec Mingw32 11.2.0  
-`CircularBitShifter.exe <valeur> [--format=<ascii|hex|bin>] [-b] [-h] [-d] [-i] [-e] [-m1 | -m2 | -m3]`  
+`CircularBitShifter.exe <valeur> [--format=<ascii|hex|bin>] [--shift=<left|right>] [-b] [-h] [-d] [-i] [-e] [-m1 | -m2 | -m3]`  
 
 
 ## Options
     --format=<ascii|hex|bin> : Spécifie le format de sortie (par défaut : ascii)
+    --shift=<left|right> : Sens du décalage circulaire (par defaut : left)
     -b : Affiche la valeur en binaire
     -h : Affiche la valeur en hexadécimal
     -d : Affiche la valeur en décimal
